@@ -6,6 +6,29 @@ function enqueue($item) {
     fclose($queue_handle);
 }
 
+
+$curl = curl_init();
+
+curl_setopt_array($curl, array(
+    CURLOPT_URL => 'https://api.twitter.com/1.1/guest/activate.json',
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_ENCODING => '',
+    CURLOPT_MAXREDIRS => 10,
+    CURLOPT_TIMEOUT => 0,
+    CURLOPT_FOLLOWLOCATION => true,
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST => 'POST',
+    CURLOPT_HTTPHEADER => array(
+        'authorization: Bearer AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA',
+        'Cookie: guest_id=v1%3A168346775979279523; guest_id_ads=v1%3A168346775979279523; guest_id_marketing=v1%3A168346775979279523; personalization_id="v1_z0Rkhgen2Ct5hZQlmb02rg=="'
+    ),
+));
+
+$response = curl_exec($curl);
+curl_close($curl);
+$guestToken = json_decode($response, true)['guest_token'];
+
+
 $curl = curl_init();
 
 $guestToken = 16551441261800000000000000;
