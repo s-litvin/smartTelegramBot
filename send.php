@@ -31,6 +31,7 @@ if (isset($data['error'])) {
 $text = isset($data['text']) ? $data['text'] : '';
 $link = isset($data['link']) ? $data['link'] : '';
 $chatId = isset($data['chatID']) ? $data['chatID'] : null;
+$name = isset($data['name']) ? $data['name'] : null;
 
 if (!$text || $chatId === null) {
     return;
@@ -106,7 +107,7 @@ curl_setopt_array($curl, [
 $response = curl_exec($curl);
 curl_close($curl);
 
-$name = (isset($data['name']) && $data['name']) ? $data['name'] : '<u><b>ORIGINAL</b></u>';
+$name = $name ? $name : '<u><b>ORIGINAL</b></u>';
 $curl = curl_init();
 curl_setopt_array($curl, [
     CURLOPT_URL => 'https://api.telegram.org/bot' . $botID . '/sendMessage',
