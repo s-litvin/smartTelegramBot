@@ -45,10 +45,10 @@ $data = [
     'messages' => [
         [
             'role' => 'user',
-            'content' => 'Перефразируй этот текст, чтоб он звучал в позитивном тоне и с льбовью к Украине и имел столько же предложений, как исходный: '  . PHP_EOL .  $text
+            'content' => 'Перефразируй этот текст чтоб он выглядел как написанный патриотом Украины в оптимистичном тоне: '  . PHP_EOL .  $text
         ]
     ],
-    'temperature' => 1.0
+    'temperature' => 0.8
 ];
 
 $ch = curl_init($url);
@@ -106,6 +106,7 @@ curl_setopt_array($curl, [
 $response = curl_exec($curl);
 curl_close($curl);
 
+$name = (isset($data['name']) && $data['name']) ? $data['name'] : '<u><b>ORIGINAL</b></u>';
 $curl = curl_init();
 curl_setopt_array($curl, [
     CURLOPT_URL => 'https://api.telegram.org/bot' . $botID . '/sendMessage',
@@ -116,7 +117,7 @@ curl_setopt_array($curl, [
     CURLOPT_FOLLOWLOCATION => true,
     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
     CURLOPT_CUSTOMREQUEST => 'POST',
-    CURLOPT_POSTFIELDS =>'{"chat_id": "' . $chatId . '", "text": "<tg-spoiler><i><u><b>ORIGINAL:</b></u></i> ' .
+    CURLOPT_POSTFIELDS =>'{"chat_id": "' . $chatId . '", "text": "<tg-spoiler>' . $name .
         addslashes(PHP_EOL . $text) . '</tg-spoiler>", "parse_mode":"HTML", "disable_notification": "true"}',
     CURLOPT_HTTPHEADER => ['Content-Type: application/json'],
 ]);

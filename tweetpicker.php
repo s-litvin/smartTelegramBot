@@ -87,9 +87,10 @@ foreach ($instructions as $instruction) {
 
         $entryID = $entry['entryId'];
         $content = $entry['content']['itemContent']['tweet_results']['result']['legacy']['full_text'];
+        $name = $entry['content']['itemContent']['tweet_results']['result']['core']['user_results']['result']['legacy']['name'];
 
         // skipping retweets
-        if (strpos($content, 'RT @') !== false) {
+        if (strpos($content, 'RT @') !== false || !$content) {
             continue;
         }
 
@@ -112,10 +113,12 @@ foreach ($instructions as $instruction) {
         if (!$found) {
             file_put_contents($timelineFile, json_encode([
                     'entryId' => $entryID,
+                    'name' => $name,
                     'text' => $content
                 ]) . "\n", FILE_APPEND);
 
             enqueue(json_encode([
+                'name' => $name,
                 'text' => $content,
                 'chatID' => isset($argv[1]) ? $argv[1] : null
             ]));
